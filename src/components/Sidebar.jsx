@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { Home, BookOpen, Search, User, Settings } from "lucide-react";
 
 const menuItems = [
-  { label: "Dashboard", icon: Home },
-  { label: "My Courses", icon: BookOpen },
-  { label: "Browse Courses", icon: Search },
-  { label: "Profile", icon: User },
-  { label: "Settings", icon: Settings },
+  { label: "لوحة التحكم", icon: Home },
+  { label: "دوراتي", icon: BookOpen },
+  { label: "تصفح الدورات", icon: Search },
+  { label: "الملف الشخصي", icon: User },
+  { label: "الإعدادات", icon: Settings },
 ];
 
 const Sidebar = () => {
   const [active, setActive] = useState("Dashboard");
 
   return (
-    <div className="fixed top-0 left-0 w-72 h-screen bg-white border-r border-gray-200 px-4 py-6">
+    <div className="fixed top-0 right-0 w-72 h-screen bg-white border-r border-gray-200 px-4 py-6">
       {/* Menu */}
       <nav className="flex flex-col gap-3 pt-17 ">
         {menuItems.map((item, index) => {

@@ -6,11 +6,10 @@ const Home = () => {
     <div>
       <div className="">
         <h2 className="text-3xl font-bold">
-          Hello, Mohamed Abdelaziz Hassan El-Sharif.👋
+          مرحباً، محمد عبد العزيز حسن الشريف! 👋
         </h2>
-        <p className="text-lg max-w-[600px] mt-2 text-gray-500">
-          Keep learning consistently and focus on building your skills step by
-          step to reach your academic goals.
+        <p className="text-xl max-w-[600px] mt-2 text-gray-500">
+          استمر في التعلم وحقق أهدافك التعليمية
         </p>
         <h3>زياد عطيه</h3>
       </div>

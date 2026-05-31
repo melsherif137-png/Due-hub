@@ -1,3 +1,10 @@
 @import "tailwindcss";
-@import "./styles/fonts.css";
-@import "./styles/theme.css";
+
+:root {
+  --font-arabic: "Cairo", sans-serif;
+}
+
+body {
+  direction: rtl;
+  font-family: var(--font-arabic), sans-serif;
+}

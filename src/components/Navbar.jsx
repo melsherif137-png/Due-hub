@@ -30,7 +30,7 @@ export default function Navbar() {
             <Search className="w-5 h-5 text-gray-500 " />
             <input
               type="text"
-              placeholder="Search courses"
+              placeholder="ابحث عن الدورات.."
               className="bg-transparent outline-none px-3 w-full text-sm"
             />
           </div>
