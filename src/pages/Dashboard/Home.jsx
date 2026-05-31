@@ -12,6 +12,7 @@ const Home = () => {
           Keep learning consistently and focus on building your skills step by
           step to reach your academic goals.
         </p>
+        <h3>زياد عطيه</h3>
       </div>
       <StudentStatus />
     </div>
