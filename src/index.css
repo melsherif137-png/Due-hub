@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./App.css";
 
 :root {
   --font-arabic: "Cairo", sans-serif;
