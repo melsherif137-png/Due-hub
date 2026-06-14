@@ -1,14 +1,14 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./Dashboard/Home";
+import AppLayout from "./AppLayout";
+import DashboardLayout from "./DashboardLayout";
 
 const MainContent = () => {
   return (
-    <div className="min-h-screen mr-72 pt-22 px-8 bg-gray-100">
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<AppLayout />} />
+      <Route path="/dashboard" element={<DashboardLayout />} />
+    </Routes>
   );
 };
 

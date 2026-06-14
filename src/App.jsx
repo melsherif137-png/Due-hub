@@ -6,8 +6,6 @@ import "./index.css";
 function App() {
   return (
     <>
-      <Navbar />
-      <Sidebar />
       <MainContent />
     </>
   );
