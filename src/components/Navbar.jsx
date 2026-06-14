@@ -1,4 +1,5 @@
 import { GraduationCap, Bell, UserCircle, Search } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
@@ -75,9 +76,9 @@ export default function Navbar() {
           <Bell className="w-6 h-6" />
           <span className="absolute top-2 right-2 w-2 h-2 bg-red-600 rounded-full" />
         </button>
-
-        <button
-          className="
+        <Link to="/login">
+          <button
+            className="
             flex items-center justify-center
             w-11 h-11
             rounded-xl
@@ -91,9 +92,10 @@ export default function Navbar() {
             hover:-translate-y-0.5
             cursor-pointer
         "
-        >
-          <UserCircle className="w-6 h-6" />
-        </button>
+          >
+            <UserCircle className="w-6 h-6" />
+          </button>
+        </Link>
       </div>
     </nav>
   );
