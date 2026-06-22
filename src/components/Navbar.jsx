@@ -9,7 +9,7 @@ export default function Navbar() {
           <GraduationCap className="w-6 h-6 text-white" />
         </div>
 
-        <span className="text-xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent mr-2">
+        <span className="text-xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent">
           EduHub
         </span>
         <div

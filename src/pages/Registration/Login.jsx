@@ -72,9 +72,9 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">البريد الإلكتروني</label>
+              <label className="text-sm font-medium ">البريد الإلكتروني</label>
 
-              <div className="relative">
+              <div className="relative mt-2">
                 <Mail className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
 
                 <input
