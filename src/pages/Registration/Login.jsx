@@ -9,6 +9,7 @@ import {
   EyeOffIcon,
 } from "lucide-react";
 
+// المكون يمثل صفحة تسجيل الدخول بالديزاين المتوافق والموحد
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,7 +32,6 @@ const Login = () => {
 
     try {
       console.log({ email, password });
-
       navigate("/dashboard");
     } catch (err) {
       setError("حدث خطأ أثناء تسجيل الدخول");
@@ -46,14 +46,14 @@ const Login = () => {
       dir="rtl"
     >
       <div className="w-full max-w-md">
-        {/* Logo */}
+        {/* Logo - متوافق تماماً مع التدرج والأبعاد */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
               <GraduationCap className="w-7 h-7 text-white" />
             </div>
 
-            <span className="text-3xl font-bold bg-gradient-to-l bg-gradient-to-br from-blue-500 to-purple-500 bg-clip-text text-transparent">
+            <span className="text-3xl font-bold bg-gradient-to-br from-blue-500 to-purple-500 bg-clip-text text-transparent">
               EduHub
             </span>
           </Link>
@@ -66,27 +66,21 @@ const Login = () => {
         <div className="border border-border/50 rounded-xl shadow-xl backdrop-blur-sm bg-card/80 p-6">
           <h2 className="text-xl font-semibold mb-1">تسجيل الدخول</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            أدخل بياناتك للوصول إلى حسابك
+            أدخل بياناتك للوصول إلى حسابك التعليمي
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
             <div className="space-y-2">
-              <label className="text-sm font-medium ">البريد الإلكتروني</label>
-
+              <label className="text-sm font-medium">البريد الإلكتروني</label>
               <div className="relative mt-2">
                 <Mail className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-
                 <input
                   type="email"
                   placeholder="example@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="
-                    w-full h-11 rounded-lg border border-border
-                    bg-background px-3 pr-10
-                    focus:outline-none focus:ring-2 focus:ring-primary
-                  "
+                  className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
                   dir="ltr"
                 />
               </div>
@@ -96,10 +90,9 @@ const Login = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium">كلمة المرور</label>
-
                 <Link
                   to="/forgot-password"
-                  className="text-sm text-primary hover:underline"
+                  className="text-sm text-blue-500 font-semibold hover:underline"
                 >
                   نسيت كلمة المرور؟
                 </Link>
@@ -118,17 +111,12 @@ const Login = () => {
                     onClick={() => setShowPassword(true)}
                   />
                 )}
-
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="
-                    w-full h-11 rounded-lg border border-border
-                    bg-background px-3 pr-10
-                    focus:outline-none focus:ring-2 focus:ring-primary
-                  "
+                  className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
             </div>
@@ -141,21 +129,21 @@ const Login = () => {
               </div>
             )}
 
-            {/* Button */}
+            {/* Button - تم تطبيق الـ Gradient الموحد من كود الـ SignIn */}
             <button
               type="submit"
-              className="w-full h-11 rounded-lg bg-[var(--primary)] text-white font-medium hover:opacity-90 transition disabled:opacity-50"
+              className="w-full h-11 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:opacity-90 transition disabled:opacity-50"
               disabled={isLoading}
             >
               {isLoading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
             </button>
 
-            {/* Register */}
+            {/* Link to SignIn page - تم توجيه الرابط ليأخذ المستخدم لصفحة الـ SignIn */}
             <p className="text-sm text-center text-muted-foreground">
               ليس لديك حساب؟{" "}
               <Link
                 to="/signin"
-                className="text-primary hover:underline font-medium"
+                className="text-blue-500 font-bold hover:underline"
               >
                 سجل الآن
               </Link>

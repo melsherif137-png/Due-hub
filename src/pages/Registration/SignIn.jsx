@@ -4,15 +4,17 @@ import {
   GraduationCap,
   Mail,
   Lock,
-  User, // إضافة أيقونة المستخدم لإنشاء الحساب
+  User,
   AlertCircle,
   EyeIcon,
   EyeOffIcon,
+  BookOpen,
+  UserCheck,
 } from "lucide-react";
 
-// تم تغيير اسم المكون إلى SignIn بناءً على طلبك
 const SignIn = () => {
-  const [fullName, setFullName] = useState(""); // حقل الاسم الكامل لعمل حساب جديد
+  const [accountType, setAccountType] = useState("student");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -24,7 +26,6 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // التحقق من الحقول المطلوبة لعمل حساب جديد
     if (!fullName || !email || !password) {
       setError("يرجى ملء جميع الحقول المطلوبة لإنشاء حسابك");
       return;
@@ -34,7 +35,7 @@ const SignIn = () => {
     setIsLoading(true);
 
     try {
-      console.log({ fullName, email, password });
+      console.log({ accountType, fullName, email, password });
       navigate("/dashboard");
     } catch (err) {
       setError("حدث خطأ أثناء إنشاء الحساب");
@@ -69,10 +70,57 @@ const SignIn = () => {
         <div className="border border-border/50 rounded-xl shadow-xl backdrop-blur-sm bg-card/80 p-6">
           <h2 className="text-xl font-semibold mb-1">إنشاء حساب جديد</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            أدخل بياناتك الشخصية لتفعيل الحساب فوراً
+            اختر نوع حسابك ثم أدخل بياناتك الشخصية لتفعيل الحساب
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* اختيار نوع الحساب */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">تسجيل كـ :</label>
+              <div className="grid grid-cols-3 gap-2 mt-2">
+                <button
+                  type="button"
+                  onClick={() => setAccountType("student")}
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition duration-200 cursor-pointer ${
+                    accountType === "student"
+                      ? "border-blue-500 bg-blue-500/5 text-blue-600 font-semibold"
+                      : "border-border bg-background text-muted-foreground hover:bg-slate-50"
+                  }`}
+                >
+                  <User className="w-5 h-5 mb-1" />
+                  <span className="text-xs">طالب</span>
+                </button>
+
+                {/* خيار: مدرس */}
+                <button
+                  type="button"
+                  onClick={() => setAccountType("teacher")}
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition duration-200 cursor-pointer ${
+                    accountType === "teacher"
+                      ? "border-blue-500 bg-blue-500/5 text-blue-600 font-semibold"
+                      : "border-border bg-background text-muted-foreground hover:bg-slate-50"
+                  }`}
+                >
+                  <BookOpen className="w-5 h-5 mb-1" />
+                  <span className="text-xs">مدرس</span>
+                </button>
+
+                {/* خيار: ولي أمر */}
+                <button
+                  type="button"
+                  onClick={() => setAccountType("parent")}
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition duration-200 cursor-pointer ${
+                    accountType === "parent"
+                      ? "border-blue-500 bg-blue-500/5 text-blue-600 font-semibold"
+                      : "border-border bg-background text-muted-foreground hover:bg-slate-50"
+                  }`}
+                >
+                  <UserCheck className="w-5 h-5 mb-1" />
+                  <span className="text-xs">ولي أمر</span>
+                </button>
+              </div>
+            </div>
+
             {/* Full Name */}
             <div className="space-y-2">
               <label className="text-sm font-medium">الاسم الكامل</label>
@@ -138,7 +186,7 @@ const SignIn = () => {
               </div>
             )}
 
-            {/* Button - تم تسميته Sign In بناءً على طلبك */}
+            {/* Button */}
             <button
               type="submit"
               className="w-full h-11 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:opacity-90 transition disabled:opacity-50"
@@ -152,7 +200,7 @@ const SignIn = () => {
               لديك حساب بالفعل؟{" "}
               <Link
                 to="/login"
-                className="text-blue-500 font-bold hover:underline font-medium"
+                className="text-blue-500 font-bold hover:underline"
               >
                 سجل دخولك
               </Link>
