@@ -4,13 +4,17 @@ import {
   GraduationCap,
   Mail,
   Lock,
+  User,
   AlertCircle,
   EyeIcon,
   EyeOffIcon,
+  BookOpen,
+  UserCheck,
 } from "lucide-react";
 
-// المكون يمثل صفحة تسجيل الدخول بالديزاين المتوافق والموحد
-const Login = () => {
+const SignIn = () => {
+  const [accountType, setAccountType] = useState("student");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -22,8 +26,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      setError("يرجى إدخال البريد الإلكتروني وكلمة المرور");
+    if (!fullName || !email || !password) {
+      setError("يرجى ملء جميع الحقول المطلوبة لإنشاء حسابك");
       return;
     }
 
@@ -31,10 +35,10 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      console.log({ email, password });
+      console.log({ accountType, fullName, email, password });
       navigate("/dashboard");
     } catch (err) {
-      setError("حدث خطأ أثناء تسجيل الدخول");
+      setError("حدث خطأ أثناء إنشاء الحساب");
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +50,7 @@ const Login = () => {
       dir="rtl"
     >
       <div className="w-full max-w-md">
-        {/* Logo - متوافق تماماً مع التدرج والأبعاد */}
+        {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-4">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
@@ -59,17 +63,79 @@ const Login = () => {
           </Link>
 
           <p className="text-muted-foreground text-lg">
-            مرحباً بعودتك! سجل دخولك للمتابعة
+            أهلاً بك! قم بإنشاء حسابك التعليمي الآن
           </p>
         </div>
 
         <div className="border border-border/50 rounded-xl shadow-xl backdrop-blur-sm bg-card/80 p-6">
-          <h2 className="text-xl font-semibold mb-1">تسجيل الدخول</h2>
+          <h2 className="text-xl font-semibold mb-1">إنشاء حساب جديد</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            أدخل بياناتك للوصول إلى حسابك التعليمي
+            اختر نوع حسابك ثم أدخل بياناتك الشخصية لتفعيل الحساب
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* اختيار نوع الحساب */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">تسجيل كـ :</label>
+              <div className="grid grid-cols-3 gap-2 mt-2">
+                <button
+                  type="button"
+                  onClick={() => setAccountType("student")}
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition duration-200 cursor-pointer ${
+                    accountType === "student"
+                      ? "border-blue-500 bg-blue-500/5 text-blue-600 font-semibold"
+                      : "border-border bg-background text-muted-foreground hover:bg-slate-50"
+                  }`}
+                >
+                  <User className="w-5 h-5 mb-1" />
+                  <span className="text-xs">طالب</span>
+                </button>
+
+                {/* خيار: مدرس */}
+                <button
+                  type="button"
+                  onClick={() => setAccountType("teacher")}
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition duration-200 cursor-pointer ${
+                    accountType === "teacher"
+                      ? "border-blue-500 bg-blue-500/5 text-blue-600 font-semibold"
+                      : "border-border bg-background text-muted-foreground hover:bg-slate-50"
+                  }`}
+                >
+                  <BookOpen className="w-5 h-5 mb-1" />
+                  <span className="text-xs">مدرس</span>
+                </button>
+
+                {/* خيار: ولي أمر */}
+                <button
+                  type="button"
+                  onClick={() => setAccountType("parent")}
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition duration-200 cursor-pointer ${
+                    accountType === "parent"
+                      ? "border-blue-500 bg-blue-500/5 text-blue-600 font-semibold"
+                      : "border-border bg-background text-muted-foreground hover:bg-slate-50"
+                  }`}
+                >
+                  <UserCheck className="w-5 h-5 mb-1" />
+                  <span className="text-xs">ولي أمر</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Full Name */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">الاسم الكامل</label>
+              <div className="relative mt-2">
+                <User className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="محمد أحمد"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+            </div>
+
             {/* Email */}
             <div className="space-y-2">
               <label className="text-sm font-medium">البريد الإلكتروني</label>
@@ -88,17 +154,8 @@ const Login = () => {
 
             {/* Password */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium">كلمة المرور</label>
-                <Link
-                  to="/forgot-password"
-                  className="text-sm text-blue-500 font-semibold hover:underline"
-                >
-                  نسيت كلمة المرور؟
-                </Link>
-              </div>
-
-              <div className="relative">
+              <label className="text-sm font-medium">كلمة المرور</label>
+              <div className="relative mt-2">
                 <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 {showPassword ? (
                   <EyeOffIcon
@@ -129,23 +186,23 @@ const Login = () => {
               </div>
             )}
 
-            {/* Button - تم تطبيق الـ Gradient الموحد من كود الـ SignIn */}
+            {/* Button */}
             <button
               type="submit"
               className="w-full h-11 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:opacity-90 transition disabled:opacity-50"
               disabled={isLoading}
             >
-              {isLoading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
+              {isLoading ? "جاري إنشاء الحساب..." : "Sign In"}
             </button>
 
-            {/* Link to SignIn page - تم توجيه الرابط ليأخذ المستخدم لصفحة الـ SignIn */}
+            {/* Login Link */}
             <p className="text-sm text-center text-muted-foreground">
-              ليس لديك حساب؟{" "}
+              لديك حساب بالفعل؟{" "}
               <Link
-                to="/signin"
+                to="/login"
                 className="text-blue-500 font-bold hover:underline"
               >
-                سجل الآن
+                سجل دخولك
               </Link>
             </p>
           </form>
@@ -165,4 +222,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;
