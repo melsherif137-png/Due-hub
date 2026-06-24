@@ -11,7 +11,6 @@ const Dashboard = () => {
         <p className="text-xl max-w-[600px] mt-2 text-gray-500">
           استمر في التعلم وحقق أهدافك التعليمية
         </p>
-        <h1>زياد عطيه</h1>
       </div>
       <StudentStatus />
     </div>
