@@ -11,31 +11,57 @@ import {
   BookOpen,
   UserCheck,
 } from "lucide-react";
+import axios from "axios";
 
-const SignIn = () => {
+const SignUp = () => {
   const [accountType, setAccountType] = useState("student");
-  const [fullName, setFullName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!fullName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
       setError("يرجى ملء جميع الحقول المطلوبة لإنشاء حسابك");
       return;
     }
+
+    if (password !== confirmPassword) {
+      setError("كلمتا المرور غير متطابقتين");
+      return;
+    }
+
+    const userData = {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      role: accountType,
+    };
 
     setError("");
     setIsLoading(true);
 
     try {
-      console.log({ accountType, fullName, email, password });
+      const response = await axios.post(
+        "http://eduhubapi.somee.com/api/v1/auth/register",
+        userData,
+      );
+
+      console.log(response.data);
+
+      localStorage.setItem("token", response.data.data.accessToken);
+
       navigate("/dashboard");
     } catch (err) {
       setError("حدث خطأ أثناء إنشاء الحساب");
@@ -77,7 +103,7 @@ const SignIn = () => {
             {/* اختيار نوع الحساب */}
             <div className="space-y-2">
               <label className="text-sm font-medium">تسجيل كـ :</label>
-              <div className="grid grid-cols-3 gap-2 mt-2">
+              <div className="grid grid-cols-2 gap-2 mt-2">
                 <button
                   type="button"
                   onClick={() => setAccountType("student")}
@@ -104,35 +130,39 @@ const SignIn = () => {
                   <BookOpen className="w-5 h-5 mb-1" />
                   <span className="text-xs">مدرس</span>
                 </button>
-
-                {/* خيار: ولي أمر */}
-                <button
-                  type="button"
-                  onClick={() => setAccountType("parent")}
-                  className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition duration-200 cursor-pointer ${
-                    accountType === "parent"
-                      ? "border-blue-500 bg-blue-500/5 text-blue-600 font-semibold"
-                      : "border-border bg-background text-muted-foreground hover:bg-slate-50"
-                  }`}
-                >
-                  <UserCheck className="w-5 h-5 mb-1" />
-                  <span className="text-xs">ولي أمر</span>
-                </button>
               </div>
             </div>
 
-            {/* Full Name */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">الاسم الكامل</label>
-              <div className="relative mt-2">
-                <User className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="محمد أحمد"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
-                />
+            {/* First Name & Last Name */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* First Name */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">الاسم الأول</label>
+                <div className="relative mt-2">
+                  <User className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="محمد"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </div>
+
+              {/* Last Name */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">الاسم الأخير</label>
+                <div className="relative mt-2">
+                  <User className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="أحمد"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
               </div>
             </div>
 
@@ -178,6 +208,32 @@ const SignIn = () => {
               </div>
             </div>
 
+            {/* Confirm Password */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">تأكيد كلمة المرور</label>
+              <div className="relative mt-2">
+                <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                {showConfirmPassword ? (
+                  <EyeOffIcon
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground cursor-pointer"
+                    onClick={() => setShowConfirmPassword(false)}
+                  />
+                ) : (
+                  <EyeIcon
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground cursor-pointer"
+                    onClick={() => setShowConfirmPassword(true)}
+                  />
+                )}
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+            </div>
+
             {/* Error */}
             {error && (
               <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive">
@@ -186,13 +242,13 @@ const SignIn = () => {
               </div>
             )}
 
-            {/* Button */}
+            {/* Register Button */}
             <button
               type="submit"
               className="w-full h-11 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:opacity-90 transition disabled:opacity-50"
               disabled={isLoading}
             >
-              {isLoading ? "جاري إنشاء الحساب..." : "Sign In"}
+              {isLoading ? "جاري إنشاء الحساب..." : "Register"}
             </button>
 
             {/* Login Link */}
@@ -222,4 +278,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

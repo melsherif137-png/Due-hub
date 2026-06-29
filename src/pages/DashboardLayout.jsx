@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import Home from "./Dashboard/Home";
+import Dashboard from "./Dashboard/DashboardStudent";
 
 const DashboardLayout = () => {
   return (
@@ -8,7 +8,7 @@ const DashboardLayout = () => {
       <Navbar />
       <Sidebar />
       <div className="min-h-screen mr-72 pt-22 px-8 bg-gray-100">
-        <Home />
+        <Dashboard />
       </div>
     </>
   );

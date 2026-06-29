@@ -58,7 +58,7 @@ const socialLinks = [
     icon: FaGithub,
     href: "#",
     color:
-      "hover:text-slate-900 hover:bg-slate-900/10 hover:border-slate-950/20 dark:hover:text-white dark:hover:bg-white/10",
+      "hover:text-slate-900 hover:bg-slate-900/10 hover:border-slate-950/20 dark:hover:text-black dark:hover:bg-white/10",
   },
 ];
 

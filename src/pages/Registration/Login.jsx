@@ -91,7 +91,7 @@ const Login = () => {
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium">كلمة المرور</label>
                 <Link
-                  to="/forgot-password"
+                  to="/ForgotPassword"
                   className="text-sm text-blue-500 font-semibold hover:underline"
                 >
                   نسيت كلمة المرور؟
