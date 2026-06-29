@@ -9,9 +9,10 @@ import {
   EyeIcon,
   EyeOffIcon,
   BookOpen,
-  UserCheck,
+  Contact,
 } from "lucide-react";
-import axios from "axios";
+
+import { useAuth } from "../../auth/AuthContext";
 
 const SignUp = () => {
   const [accountType, setAccountType] = useState("student");
@@ -26,6 +27,7 @@ const SignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,31 +42,24 @@ const SignUp = () => {
       return;
     }
 
-    const userData = {
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword,
-      role: accountType,
-    };
-
     setError("");
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://eduhubapi.somee.com/api/v1/auth/register",
-        userData,
-      );
-
-      console.log(response.data);
-
-      localStorage.setItem("token", response.data.data.accessToken);
+      // الاعتماد على دالة register القادمة من السياق (Context)
+      await register({
+        role: accountType,
+        firstName,
+        lastName,
+        fullName: `${firstName} ${lastName}`.trim(),
+        email,
+        password,
+        confirmPassword,
+      });
 
       navigate("/dashboard");
     } catch (err) {
-      setError("حدث خطأ أثناء إنشاء الحساب");
+      setError(err?.message || "حدث خطأ أثناء إنشاء الحساب");
     } finally {
       setIsLoading(false);
     }
@@ -133,9 +128,8 @@ const SignUp = () => {
               </div>
             </div>
 
-            {/* First Name & Last Name */}
-            <div className="grid grid-cols-2 gap-4">
-              {/* First Name */}
+            {/* الاسم الأول واسم العائلة */}
+            <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
                 <label className="text-sm font-medium">الاسم الأول</label>
                 <div className="relative mt-2">
@@ -150,11 +144,10 @@ const SignUp = () => {
                 </div>
               </div>
 
-              {/* Last Name */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">الاسم الأخير</label>
+                <label className="text-sm font-medium">اسم العائلة</label>
                 <div className="relative mt-2">
-                  <User className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Contact className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
                     type="text"
                     placeholder="أحمد"
@@ -166,7 +159,7 @@ const SignUp = () => {
               </div>
             </div>
 
-            {/* Email */}
+            {/* البريد الإلكتروني */}
             <div className="space-y-2">
               <label className="text-sm font-medium">البريد الإلكتروني</label>
               <div className="relative mt-2">
@@ -182,7 +175,7 @@ const SignUp = () => {
               </div>
             </div>
 
-            {/* Password */}
+            {/* كلمة المرور */}
             <div className="space-y-2">
               <label className="text-sm font-medium">كلمة المرور</label>
               <div className="relative mt-2">
@@ -208,7 +201,7 @@ const SignUp = () => {
               </div>
             </div>
 
-            {/* Confirm Password */}
+            {/* تأكيد كلمة المرور */}
             <div className="space-y-2">
               <label className="text-sm font-medium">تأكيد كلمة المرور</label>
               <div className="relative mt-2">
@@ -234,7 +227,7 @@ const SignUp = () => {
               </div>
             </div>
 
-            {/* Error */}
+            {/* الأخطاء */}
             {error && (
               <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive">
                 <AlertCircle className="w-4 h-4" />
@@ -242,16 +235,16 @@ const SignUp = () => {
               </div>
             )}
 
-            {/* Register Button */}
+            {/* زر إنشاء الحساب */}
             <button
               type="submit"
               className="w-full h-11 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:opacity-90 transition disabled:opacity-50"
               disabled={isLoading}
             >
-              {isLoading ? "جاري إنشاء الحساب..." : "Register"}
+              {isLoading ? "جاري إنشاء الحساب..." : "إنشاء الحساب"}
             </button>
 
-            {/* Login Link */}
+            {/* رابط تسجيل الدخول */}
             <p className="text-sm text-center text-muted-foreground">
               لديك حساب بالفعل؟{" "}
               <Link
@@ -264,7 +257,7 @@ const SignUp = () => {
           </form>
         </div>
 
-        {/* Back */}
+        {/* العودة */}
         <div className="mt-6 text-center">
           <Link
             to="/"

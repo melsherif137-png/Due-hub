@@ -8,6 +8,7 @@ import {
   EyeIcon,
   EyeOffIcon,
 } from "lucide-react";
+import { useAuth } from "../../auth/AuthContext";
 
 // المكون يمثل صفحة تسجيل الدخول بالديزاين المتوافق والموحد
 const Login = () => {
@@ -18,6 +19,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,10 +33,10 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      console.log({ email, password });
+      await login({ email, password });
       navigate("/dashboard");
     } catch (err) {
-      setError("حدث خطأ أثناء تسجيل الدخول");
+      setError(err?.message || "حدث خطأ أثناء تسجيل الدخول");
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +93,7 @@ const Login = () => {
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium">كلمة المرور</label>
                 <Link
-                  to="/ForgotPassword"
+                  to="/forgot-password"
                   className="text-sm text-blue-500 font-semibold hover:underline"
                 >
                   نسيت كلمة المرور؟
@@ -142,7 +144,7 @@ const Login = () => {
             <p className="text-sm text-center text-muted-foreground">
               ليس لديك حساب؟{" "}
               <Link
-                to="/signin"
+                to="/signup"
                 className="text-blue-500 font-bold hover:underline"
               >
                 سجل الآن
