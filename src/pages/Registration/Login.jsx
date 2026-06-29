@@ -144,7 +144,7 @@ const Login = () => {
             <p className="text-sm text-center text-muted-foreground">
               ليس لديك حساب؟{" "}
               <Link
-                to="/signin"
+                to="/signup"
                 className="text-blue-500 font-bold hover:underline"
               >
                 سجل الآن
