@@ -8,6 +8,7 @@ import {
   EyeIcon,
   EyeOffIcon,
 } from "lucide-react";
+import { useAuth } from "../../auth/AuthContext";
 
 // المكون يمثل صفحة تسجيل الدخول بالديزاين المتوافق والموحد
 const Login = () => {
@@ -18,6 +19,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,10 +33,10 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      console.log({ email, password });
+      await login({ email, password });
       navigate("/dashboard");
     } catch (err) {
-      setError("حدث خطأ أثناء تسجيل الدخول");
+      setError(err?.message || "حدث خطأ أثناء تسجيل الدخول");
     } finally {
       setIsLoading(false);
     }

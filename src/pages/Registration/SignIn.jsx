@@ -10,24 +10,35 @@ import {
   EyeOffIcon,
   BookOpen,
   UserCheck,
+  Contact,
 } from "lucide-react";
+import { useAuth } from "../../auth/AuthContext";
 
 const SignIn = () => {
   const [accountType, setAccountType] = useState("student");
-  const [fullName, setFullName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!fullName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
       setError("يرجى ملء جميع الحقول المطلوبة لإنشاء حسابك");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("كلمتا المرور غير متطابقتين");
       return;
     }
 
@@ -35,10 +46,18 @@ const SignIn = () => {
     setIsLoading(true);
 
     try {
-      console.log({ accountType, fullName, email, password });
+      await register({
+        role: accountType,
+        firstName,
+        lastName,
+        fullName: `${firstName} ${lastName}`.trim(),
+        email,
+        password,
+        confirmPassword,
+      });
       navigate("/dashboard");
     } catch (err) {
-      setError("حدث خطأ أثناء إنشاء الحساب");
+      setError(err?.message || "حدث خطأ أثناء إنشاء الحساب");
     } finally {
       setIsLoading(false);
     }
@@ -121,18 +140,33 @@ const SignIn = () => {
               </div>
             </div>
 
-            {/* Full Name */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">الاسم الكامل</label>
-              <div className="relative mt-2">
-                <User className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="محمد أحمد"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
-                />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">الاسم الأول</label>
+                <div className="relative mt-2">
+                  <User className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="محمد"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">اسم العائلة</label>
+                <div className="relative mt-2">
+                  <Contact className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="أحمد"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
               </div>
             </div>
 
@@ -178,6 +212,31 @@ const SignIn = () => {
               </div>
             </div>
 
+            <div className="space-y-2">
+              <label className="text-sm font-medium">تأكيد كلمة المرور</label>
+              <div className="relative mt-2">
+                <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                {showConfirmPassword ? (
+                  <EyeOffIcon
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground cursor-pointer"
+                    onClick={() => setShowConfirmPassword(false)}
+                  />
+                ) : (
+                  <EyeIcon
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground cursor-pointer"
+                    onClick={() => setShowConfirmPassword(true)}
+                  />
+                )}
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full h-11 rounded-lg border border-border bg-background px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+            </div>
+
             {/* Error */}
             {error && (
               <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive">
@@ -186,13 +245,12 @@ const SignIn = () => {
               </div>
             )}
 
-            {/* Button */}
             <button
               type="submit"
               className="w-full h-11 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:opacity-90 transition disabled:opacity-50"
               disabled={isLoading}
             >
-              {isLoading ? "جاري إنشاء الحساب..." : "Sign In"}
+              {isLoading ? "جاري إنشاء الحساب..." : "إنشاء الحساب"}
             </button>
 
             {/* Login Link */}
